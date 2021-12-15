@@ -10,27 +10,7 @@ const bcrypt = require("bcryptjs");
 const jwt=require("jsonwebtoken")
 
 
-student_route.post('/signup',function(req,res){
-    const full_name = req.body.full_name;
-    const email = req.body.email;
-    const age = req.body.age;
-    const password = req.body.password;
 
-    bcrypt.hash(password,12,function(err, hash12){
-        var student_data = new Students({full_name :  full_name,
-        email : email,
-        age : age,
-        password : hash12,
-        });
-        console.log("from student register route")
-
-        student_data.save().then(function(){
-            res.status(201).json({message : "Congratulation! Registration has been successfull."})
-        }). catch ( function (e){
-            res.status().json({message : e})
-        })
-    }); 
-})
 
 //User Login
 
