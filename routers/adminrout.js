@@ -16,7 +16,7 @@ admin_route.post('/adminsignup',function(req,res){
     const password = req.body.password;
 
     bcrypt.hash(password,12,function(err, hash12){
-        var user_data = new Admin({username :  username,
+        var admin_data = new Admin({username :  username,
         email : email,
         password : hash12,
         });
