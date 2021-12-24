@@ -28,4 +28,14 @@ describe('User Schema test For inserting', () => {
      expect(pro_ret.full_name).toEqual('Hari');
      });
      });
+
+     //Test for updating student / user
+     it('Test for user update', async () => {
+        return User.findOneAndUpdate({_id :Object('614f2f76d5abdb3b943b85a1')}, 
+       {$set : {full_name:'Hari Bahadur'}})
+        .then((pp)=>{
+        expect(pp.full_name).toEqual('Madan Bahadur')
+        })
+        
+       });
     })
