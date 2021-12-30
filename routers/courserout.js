@@ -48,6 +48,18 @@ router.get("/course/:id", function (req, res) {
              });
 })
 
+router.get("/searchcourse", function (req, res) {
+        const title = req.body.course_title;
+        console.log(req.body.course_title)
+        course.findOne({title : title})
+                .then(function (result) {
+                        res.status(201).json({success: true, data : result})
+                })
+                .catch(function (e) {
+                        res.status(500).json({ message: e })
+                });
+   })
+
 // update course
 router.put("/updatecourse/:id", function (req, res) {
      const id = req.params.id;
