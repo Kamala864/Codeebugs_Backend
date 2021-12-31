@@ -48,10 +48,10 @@ router.get("/course/:id", function (req, res) {
              });
 })
 
-router.get("/searchcourse", function (req, res) {
-        const title = req.body.course_title;
+router.get("/searchcourse/:course_title", function (req, res) {
+        const title = req.params.course_title;
         console.log(req.body.course_title)
-        course.findOne({title : title})
+        course.find({title : title})
                 .then(function (result) {
                         res.status(201).json({success: true, data : result})
                 })
