@@ -62,4 +62,18 @@ student_route.post('/user/login',function(req,res){
     .catch()
 })
 
+//for updating students
+student_route.put('/student/update', function(req,res){
+    const id = req.body.id;
+    const full_name = req.body.full_name;
+    const email = req.body.email;
+    const age = req.body.age;
+    const password = req.body.password 
+
+    Students.updateOne({_id:id}, {full_name : full_name}, {email : email}, {age : age}, {password : password})
+    .then(function(result){
+
+    }).catch()
+})
+
 module.exports = student_route

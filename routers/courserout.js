@@ -11,8 +11,7 @@ const image_upload = require("../middlewares/imageupload");
 router.get("/course/showall", function(req,res){
           course.find()
           .then(function (data) {
-               res.status(201).json(data)
-               
+               res.status(201).json({ success: true, data: data })
           })
           .catch(function (e) {
                res.status(500).json({ message: e })
@@ -56,7 +55,6 @@ router.get("/course/:id", function (req, res) {
         });
 })
 
-
 router.get("/searchcourse/:course_title", function (req, res) {
         const title = req.params.course_title;
         console.log(req.body.course_title)
@@ -66,8 +64,8 @@ router.get("/searchcourse/:course_title", function (req, res) {
                 })
                 .catch(function (e) {
                         res.status(500).json({ message: e })
-                });
-   })
+        });
+})
 
 // update course
 router.put("/updatecourse/:id", function (req, res) {

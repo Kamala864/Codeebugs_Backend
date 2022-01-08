@@ -1,3 +1,4 @@
+
 const mongoose = require("mongoose")
 
 const schema_course = new mongoose.Schema({
@@ -5,8 +6,8 @@ const schema_course = new mongoose.Schema({
      description : {type:String},
      lecturer : {type: String},
      video: {type: String},
-     image: {type: String}
-
+     image: {type: String},
+     chapters : {type: String}
 })
 
 const course = mongoose.model("Course", schema_course)
