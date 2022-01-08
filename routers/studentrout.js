@@ -53,7 +53,9 @@ student_route.post('/user/login',function(req,res){
 
             }
             const token=jwt.sign({yourId:data._id},'anysecretkey');
-            res.status(200).json({token:token, message:"Auth successs!"})
+            const username = data.full_name
+            const email = data.email
+            res.status(200).json({token:token,username:username,email:email, message:"Auth successs!"})
         })
     })
 
