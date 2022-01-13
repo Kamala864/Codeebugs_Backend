@@ -14,11 +14,14 @@ const route_admin = require("./routers/adminrout")
 
 const app = express();
 app.use(cors());
+const path = require('path');
+const publicDir = path.join(__dirname,"uploads");
 
 //Importing bodyParser
 const bodyParser=require("body-parser");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}))
+app.use(express.static(publicDir));
 
 app.use(cors())
 
