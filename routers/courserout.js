@@ -21,17 +21,19 @@ router.get("/course/showall", function(req,res){
 //add course
 router.post('/addcourse',video_upload.single('video'), function (req, res) {
         
-     const title = req.body.title;
-     const description = req.body.description;
-     const lecturer = req.body.lecturer;
-     const video = req.file.filename;
-     console.log(title);
+     const courseTitle = req.body.courseTitle;
+     const courseDescription = req.body.courseDescription;
+     const tutorName = req.body.tutorName;
+     const tutorial = req.body.tutorial;
+
+     console.log(courseTitle);
+     console.log(tutorial);
 
      var course_data = new course({
-             title: title,
-             description: description,
-             lecturer: lecturer,
-             video: video
+             courseTitle: courseTitle,
+             courseDescription: courseDescription,
+             tutorName: tutorName,
+             tutorial : tutorial,
      })
      course_data.save()
              .then(function () {
