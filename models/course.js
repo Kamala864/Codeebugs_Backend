@@ -8,8 +8,14 @@ const schema_course = new mongoose.Schema({
      tutorial : [
           {chapterName : String, 
           video : String} 
+     ],
+     quiz:[
+          {
+          question : String,
+          correctAnswer : String,
+          incorrectAnswer : Array
+     }
      ]
-
 })
 
 const course = mongoose.model("Course", schema_course)

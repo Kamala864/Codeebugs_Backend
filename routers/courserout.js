@@ -25,15 +25,18 @@ router.post('/addcourse',video_upload.single('video'), function (req, res) {
      const courseDescription = req.body.courseDescription;
      const tutorName = req.body.tutorName;
      const tutorial = req.body.tutorial;
+     const quiz = req.body.quiz
 
      console.log(courseTitle);
      console.log(tutorial);
+     console.log(quiz);
 
      var course_data = new course({
              courseTitle: courseTitle,
              courseDescription: courseDescription,
              tutorName: tutorName,
              tutorial : tutorial,
+             quiz : quiz,
      })
      course_data.save()
              .then(function () {
@@ -47,9 +50,10 @@ router.post('/addcourse',video_upload.single('video'), function (req, res) {
 // to display single course
 router.get("/course/:id", function (req, res) {
      const id = req.params.id;
-     console.log(id)
+//      console.log(id)
      course.findById({_id:id})
         .then(function (data) {
+        console.log(data)
         res.status(201).json(data)
     })
         .catch(function (e) {
