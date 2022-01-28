@@ -13,7 +13,7 @@ const schema_course = new mongoose.Schema({
           {
           question : String,
           correctAnswer : String,
-          incorrectAnswer : Array
+          incorrectAnswer : [],
      }
      ]
 })

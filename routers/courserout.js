@@ -25,10 +25,9 @@ router.post('/addcourse',video_upload.single('video'), function (req, res) {
      const courseDescription = req.body.courseDescription;
      const tutorName = req.body.tutorName;
      const tutorial = req.body.tutorial;
-     const quiz = req.body.quiz
+     const quiz = req.body.quiz;
 
-     console.log(courseTitle);
-     console.log(tutorial);
+     
      console.log(quiz);
 
      var course_data = new course({
@@ -40,7 +39,7 @@ router.post('/addcourse',video_upload.single('video'), function (req, res) {
      })
      course_data.save()
              .then(function () {
-                     res.status(201).json({ success: true, message: "Course has been added!" })
+                     res.status(201).json({ data: course_data,success: true, message: "Course has been added!" })
              })
              .catch(function (e) {
                      res.status(500).json({ message: e })
