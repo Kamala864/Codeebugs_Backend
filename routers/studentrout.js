@@ -53,13 +53,25 @@ student_route.post('/user/login',function(req,res){
 
             }
             const token=jwt.sign({yourId:data._id},'anysecretkey');
+            const userID= data._id
             const username = data.full_name
             const email = data.email
-            res.status(200).json({token:token,username:username,email:email, message:"Auth successs!"})
+            res.status(200).json({token:token,username:username,email:email,userID:userID, message:"Auth successs!"})
         })
     })
 
     .catch()
+})
+
+//for fetching data
+student_route.get("/user/showall", function(req,res){
+    Students.find()
+    .then(function (data) {
+         res.status(201).json({ success: true, data: data })
+    })
+    .catch(function (e) {
+         res.status(500).json({ message: e })
+ })
 })
 
 //for updating students
@@ -74,6 +86,21 @@ student_route.put('/student/update', function(req,res){
     .then(function(result){
 
     }).catch()
+})
+
+//delete student
+student_route.delete('/deleteuser/:id', function (req, res) {
+    const id = req.params.id;
+    console.log(id)
+
+    Students.deleteOne({ _id: id })
+            .then(function (result) {
+                    res.status(201).json({ success: true, message: "Course has been deleted!" })
+            })
+            .catch(function (e) {
+                    res.status(500).json({ message: e })
+            });
+
 })
 
 module.exports = student_route

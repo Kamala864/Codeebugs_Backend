@@ -7,7 +7,11 @@ const schema_course = new mongoose.Schema({
      lecturer : {type: String},
      video: {type: String},
      image: {type: String},
-     chapters : {type: String}
+     enrolledBy: [
+          {
+               userID: {type: String}
+          }
+     ]
 })
 
 const course = mongoose.model("Course", schema_course)
