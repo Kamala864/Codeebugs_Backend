@@ -21,21 +21,25 @@ router.get("/course/showall", function(req,res){
 //add course
 router.post('/addcourse',video_upload.single('video'), function (req, res) {
         
-     const title = req.body.title;
-     const description = req.body.description;
-     const lecturer = req.body.lecturer;
-     const video = req.file.filename;
-     console.log(title);
+     const courseTitle = req.body.courseTitle;
+     const courseDescription = req.body.courseDescription;
+     const tutorName = req.body.tutorName;
+     const tutorial = req.body.tutorial;
+     const quiz = req.body.quiz;
+
+     
+     console.log(quiz);
 
      var course_data = new course({
-             title: title,
-             description: description,
-             lecturer: lecturer,
-             video: video
+             courseTitle: courseTitle,
+             courseDescription: courseDescription,
+             tutorName: tutorName,
+             tutorial : tutorial,
+             quiz : quiz,
      })
      course_data.save()
              .then(function () {
-                     res.status(201).json({ success: true, message: "Course has been added!" })
+                     res.status(201).json({ data: course_data,success: true, message: "Course has been added!" })
              })
              .catch(function (e) {
                      res.status(500).json({ message: e })
@@ -45,9 +49,10 @@ router.post('/addcourse',video_upload.single('video'), function (req, res) {
 // to display single course
 router.get("/course/:id", function (req, res) {
      const id = req.params.id;
-     console.log(id)
+//      console.log(id)
      course.findById({_id:id})
         .then(function (data) {
+        console.log(data)
         res.status(201).json(data)
     })
         .catch(function (e) {

@@ -2,16 +2,23 @@
 const mongoose = require("mongoose")
 
 const schema_course = new mongoose.Schema({
-     title : {type:String},
-     description : {type:String},
-     lecturer : {type: String},
-     video: {type: String},
-     image: {type: String},
-     enrolledBy: [
+     courseTitle : {type:String},
+     courseDescription : {type:String},
+     tutorName : {type: String},
+     weight:{type: Array},
+     progress : {type:String},
+     tutorial : [
+          {chapterName : String, 
+          video : String} 
+     ],
+     quiz:[
           {
-               userID: {type: String}
-          }
+          question : String,
+          correctAnswer : String,
+          incorrectAnswer : [],
+     }
      ]
+
 })
 
 const course = mongoose.model("Course", schema_course)
