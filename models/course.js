@@ -8,14 +8,15 @@ const schema_course = new mongoose.Schema({
      weight:{type: Array},
      progress : {type:String},
      tutorial : [
-          {chapterName : String, 
-          video : String} 
+          {chapterName : String, video : String} 
      ],
      quiz:[
           {
+
           question : String,
           correctAnswer : String,
           incorrectAnswer : [],
+          
      }
      ]
 
