@@ -65,18 +65,31 @@ student_route.post('/user/login', function (req, res) {
         .catch()
 })
 
+//for fetching data
+student_route.get("/user/showall", function(req,res){
+    Students.find()
+    .then(function (data) {
+         res.status(201).json({ success: true, data: data })
+    })
+    .catch(function (e) {
+         res.status(500).json({ message: e })
+ })
+})
+
 //for updating students
 student_route.put('/student/update', function (req, res) {
     const id = req.body.id;
     const full_name = req.body.full_name;
     const email = req.body.email;
     const age = req.body.age;
-    const password = req.body.password
+    const password = req.body.password;
 
     Students.updateOne({ _id: id }, { full_name: full_name }, { email: email }, { age: age }, { password: password })
         .then(function (result) {
-
-        }).catch()
+            res.status(201).json({ success: true, message: "Student has been updated!" })
+        }).catch(function (e) {
+            res.status(500).json({ message: e })
+    });
 })
 
 student_route.post("/find-email", function (req, res) {
@@ -144,6 +157,21 @@ student_route.post("/forgot-password", (req, res) => {
         })
 })
 
+//delete student
+student_route.delete('/deleteuser/:id', function (req, res) {
+    const id = req.params.id;
+    console.log(id)
+
+    Students.deleteOne({ _id: id })
+            .then(function (result) {
+                    res.status(201).json({ success: true, message: "Course has been deleted!" })
+            })
+            .catch(function (e) {
+                    res.status(500).json({ message: e })
+            });
+
+})
+
 student_route.put("/reset-password", (req, res) => {
     const otpCode = req.body.otpCode;
 
@@ -153,14 +181,15 @@ student_route.put("/reset-password", (req, res) => {
                 res.status(403).json({ message: "Invalid Code!" })
             }
 
-            else if ((data.expireTime - currentTime) < 0) {
+            else if ((data.expireTime - Date.now()) < 0) {
                 res.status(403).json({ message: "OTP has expired!:" })
             }
             else {
                 const newPassword = req.body.newPassword;
               
                 bcrypt.hash(newPassword, 12, function (err, hash12) {
-                    Students.updateOne({ email: data.email }, { password: hash12 })
+                    var password = { newPassword: hash12 }
+                    Students.updateOne({ email: data.email }, { password: password })
                         .then(function (result) {
                             res.status(203).json({ message: "Password succesfully changed!" })
                         }).catch(function (e) {
@@ -180,4 +209,4 @@ student_route.put("/reset-password", (req, res) => {
 })
 
 
-module.exports = student_route
+module.exports = student_route;
