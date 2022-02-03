@@ -5,6 +5,7 @@ const router = new express.Router();
 const course = require("../models/course")
 const video_upload = require("../middlewares/videoupload");
 const image_upload = require("../middlewares/imageupload");
+const upload = require("../middlewares/videoupload");
 
 
 //view all course
@@ -19,8 +20,12 @@ router.get("/course/showall", function(req,res){
 })
 
 //add course
+
+
 router.post('/addcourse',video_upload.single('video'), function (req, res) {
-        
+         console.log(res) 
+
+         
      const courseTitle = req.body.courseTitle;
      const courseDescription = req.body.courseDescription;
      const courseWeight = req.body.courseWeight;
@@ -51,7 +56,9 @@ router.post('/addcourse',video_upload.single('video'), function (req, res) {
         //      tutorial : tutorial,
         //      quiz : quiz,
      })
+
      course_data.save()
+     
              .then(function () {
                      res.status(201).json({ data: course_data, success: true, message: "Course has been added!" })
              })
@@ -158,5 +165,5 @@ router.delete('/deletecourse/:id', function (req, res) {
              });
 
 })
-
+  
 module.exports = router
