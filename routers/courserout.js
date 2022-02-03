@@ -23,23 +23,37 @@ router.post('/addcourse',video_upload.single('video'), function (req, res) {
         
      const courseTitle = req.body.courseTitle;
      const courseDescription = req.body.courseDescription;
+     const courseWeight = req.body.courseWeight;
+     console.log(courseWeight);
+     const video = req.file.filename;
+     console.log(video);
      const tutorName = req.body.tutorName;
-     const tutorial = req.body.tutorial;
-     const quiz = req.body.quiz;
 
+//      let filesArray = [];
+//      req.files.forEach(element => {
+//          const file = {
+//                 chapterName: element.chapterName,
+//                 video: element.originalname
+//          }
+//          filesArray.push(file);
+//      });
+//      const tutorial = filesArray;
+//      const quiz = req.body.quiz;
      
-     console.log(quiz);
+//      console.log(quiz);
 
      var course_data = new course({
              courseTitle: courseTitle,
+             video: video,
              courseDescription: courseDescription,
+             weight: courseWeight,
              tutorName: tutorName,
-             tutorial : tutorial,
-             quiz : quiz,
+        //      tutorial : tutorial,
+        //      quiz : quiz,
      })
      course_data.save()
              .then(function () {
-                     res.status(201).json({ data: course_data,success: true, message: "Course has been added!" })
+                     res.status(201).json({ data: course_data, success: true, message: "Course has been added!" })
              })
              .catch(function (e) {
                      res.status(500).json({ message: e })
@@ -49,7 +63,7 @@ router.post('/addcourse',video_upload.single('video'), function (req, res) {
 // to display single course
 router.get("/course/:id", function (req, res) {
      const id = req.params.id;
-//      console.log(id)
+     console.log(id)
      course.findById({_id:id})
         .then(function (data) {
         console.log(data)
@@ -93,6 +107,27 @@ router.put("/updatecourse/:id", function (req, res) {
                      res.status(500).json({ message: e })
              });
 })
+
+// update progress
+router.put("/updateprogress/:id", function (req, res) {
+        const id = req.params.id;
+        console.log(req.body.progress)
+        const update = {
+                "$set": {
+                        "progress": req.body.progress
+                }
+        };
+        const option = {
+                returnNewDocument: false
+        }
+        course.findOneAndUpdate({ _id: id }, update, option)
+                .then(function (result) {
+                        res.status(201).json({ success: true, message: "Progress has been updated!" })
+                })
+                .catch(function (e) {
+                        res.status(500).json({ message: e })
+                });
+   })
 
 // enroll course
 router.put("/enrollcourse/:id", function (req, res) {

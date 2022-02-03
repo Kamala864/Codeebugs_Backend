@@ -76,6 +76,18 @@ student_route.get("/user/showall", function(req,res){
  })
 })
 
+student_route.get("/user/:id", function(req,res){
+    const id = req.params.id
+    console.log(id)
+    Students.findById({ _id:id })
+    .then(function (data) {
+         res.status(201).json(data)
+    })
+    .catch(function (e) {
+         res.status(500).json({ message: e })
+ })
+})
+
 //for updating students
 student_route.put('/student/update', function (req, res) {
     const id = req.body.id;

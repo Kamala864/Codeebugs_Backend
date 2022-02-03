@@ -3,10 +3,12 @@ const mongoose = require("mongoose")
 
 const schema_course = new mongoose.Schema({
      courseTitle : {type:String},
+     courseImage : {type: String},
      courseDescription : {type:String},
      tutorName : {type: String},
-     weight:{type: Array},
+     weight : {type: String},
      progress : {type:String},
+     video : {type: String},
      tutorial : [
           {chapterName : String, 
           video : String} 
