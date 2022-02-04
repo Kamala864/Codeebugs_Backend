@@ -1,11 +1,15 @@
 
 const express = require("express");
 const router = new express.Router();
+const bodyParser=require("body-parser");
+
+
 
 const course = require("../models/course")
 const video_upload = require("../middlewares/videoupload");
 const image_upload = require("../middlewares/imageupload");
 const upload = require("../middlewares/videoupload");
+const { application } = require("express");
 
 
 //view all course
@@ -21,36 +25,38 @@ router.get("/course/showall", function(req,res){
 
 //add course
 
-
-router.post('/addcourse',video_upload.single('video'), function (req, res) {
-         console.log(res) 
-
+router.post('/addcourse',upload.array('filename', 10), function (req, res) {
+ 
+         console.log(req)
+      
+          
+        console.log(req.files['filename'])
          
-     const courseTitle = req.body.courseTitle;
-     const courseDescription = req.body.courseDescription;
-     const tutorName = req.body.tutorName;
-     const chapterName = req.body.chapterName;
-     const video = req.file.filename;
-     const quiz = req.body.quiz;
-
-
+//       const courseTitle = req.body.courseTitle;
+//       const courseDescription = req.body.courseDescription;
+//       const tutorName = req.body.tutorName;
+//       const chapterName = req.body.chapterName;
+//       const video = req.file.filename;
+//       const quiz = req.body.quiz;
+ 
+  
 
      var course_data = new course({
-             courseTitle: courseTitle,
-             courseDescription: courseDescription,
-             tutorName: tutorName,
-             tutorial :{chapterName : chapterName, video : video} ,
-             quiz : quiz,
-     })
+        //      courseTitle: courseTitle,
+        //      courseDescription: courseDescription,
+        //      tutorName: tutorName,
+        //      tutorial :{chapterName : chapterName, video : video} ,
+        //      quiz : quiz,
+     }) 
 
-     course_data.save()
+//      course_data.save()
      
-             .then(function () {
-                     res.status(201).json({ data: course_data,success: true, message: "Course has been added!" })
-             })
-             .catch(function (e) {
-                     res.status(500).json({ message: e })
-             })
+//              .then(function () {
+//                      res.status(201).json({ data: course_data,success: true, message: "Course has been added!" })
+//              })
+//              .catch(function (e) {
+//                      res.status(500).json({ message: e })
+//              })
 })
 
 // to display single course

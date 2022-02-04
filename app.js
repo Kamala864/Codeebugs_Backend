@@ -20,8 +20,9 @@ const publicDir = path.join(__dirname,"uploads");
 
 //Importing bodyParser
 const bodyParser=require("body-parser");
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.urlencoded({extended :false}));
+app.use(bodyParser.json());
 app.use(express.static(publicDir));
 
 app.use(cors())
