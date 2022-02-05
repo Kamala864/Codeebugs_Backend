@@ -56,9 +56,10 @@ student_route.post('/user/login', function (req, res) {
 
                 }
                 const token = jwt.sign({ yourId: data._id }, 'anysecretkey');
+                const userID = data._id
                 const username = data.full_name
                 const email = data.email
-                res.status(200).json({ token: token, username: username, email: email, message: "Auth successs!" })
+                res.status(200).json({ token: token, username: username, email: email, userID : userID,message: "Auth successs!" })
             })
         })
 
@@ -219,6 +220,21 @@ student_route.put("/reset-password", (req, res) => {
             }
         })
 })
+
+// enroll course
+student_route.put("/enrollcourse", function (req, res) {
+    const userID = req.body.userID;
+    const courseID = req.body.courseID
+
+    Students.findOneAndUpdate({ _id: userID }, { $push: { enrolledCourses: courseID } }, { new: true })
+            .then(function (result) {
+                    res.status(201).json({ success: true, message: "Course has been enrolled!" })
+            })
+            .catch(function (e) {
+                    res.status(500).json({ message: e })
+            });
+})
+
 
 
 module.exports = student_route;

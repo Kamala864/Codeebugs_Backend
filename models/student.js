@@ -4,7 +4,8 @@ const schema_student = new mongoose.Schema({
     full_name : {type: String},
     email : {type : String},
     age : {type : String},
-    password : {type :String}
+    password : {type :String},
+    enrolledCourses : {type :  Array}
 })
 
 const student = mongoose.model('Student', schema_student)

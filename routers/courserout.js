@@ -153,19 +153,6 @@ router.put("/updateprogress/:id", function (req, res) {
                 });
 })
 
-// enroll course
-router.put("/enrollcourse/:id", function (req, res) {
-        const id = req.params.id;
-        const enrolledBy = req.body.enrolledBy
-
-        course.findOneAndUpdate({ _id: id }, { $push: { enrolledBy: enrolledBy } }, { new: true })
-                .then(function (result) {
-                        res.status(201).json({ success: true, message: "Course has been updated!" })
-                })
-                .catch(function (e) {
-                        res.status(500).json({ message: e })
-                });
-})
 
 
 //delete course
