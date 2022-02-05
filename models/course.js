@@ -5,6 +5,7 @@ const schema_course = new mongoose.Schema({
      courseTitle : {type:String},
      courseImage : {type: String},
      courseDescription : {type:String},
+     coursePrice: {type:String},
      tutorName : {type: String},
      weight : {type: String},
      progress : {type:String},

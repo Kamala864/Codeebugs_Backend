@@ -41,7 +41,7 @@ admin_route.post('/Admin/login',function(req,res){
     Admin.findOne({email:email})
     .then(function(data){
         if(data==null){
-            return res.status(403).json({message:"Invalid craditaintail"})
+            return res.status(403).json({message:"Invalid cradentials"})
              
         }
 

@@ -17,12 +17,14 @@ const app = express();
 app.use(cors());
 const path = require('path');
 const publicDir = path.join(__dirname,"uploads");
+const imageDir = path.join(__dirname,"uploads/images");
 
 //Importing bodyParser
 const bodyParser=require("body-parser");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(publicDir));
+app.use(express.static(imageDir));
 
 app.use(cors())
 

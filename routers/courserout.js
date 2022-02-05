@@ -5,114 +5,131 @@ const router = new express.Router();
 const course = require("../models/course")
 const video_upload = require("../middlewares/videoupload");
 const image_upload = require("../middlewares/imageupload");
-const upload = require("../middlewares/videoupload");
 
 
 //view all course
-router.get("/course/showall", function(req,res){
-          course.find()
-          .then(function (data) {
-               res.status(201).json({ success: true, data: data })
-          })
-          .catch(function (e) {
-               res.status(500).json({ message: e })
-       })
+router.get("/course/showall", function (req, res) {
+        course.find()
+                .then(function (data) {
+                        res.status(201).json({ success: true, data: data })
+                })
+                .catch(function (e) {
+                        res.status(500).json({ message: e })
+                })
 })
 
 //add course
 
 
-router.post('/addcourse',video_upload.single('video'), function (req, res) {
-         console.log(res) 
+router.post('/addcourse',image_upload.single('courseImage'), function (req, res) {
 
-         
-     const courseTitle = req.body.courseTitle;
-     const courseDescription = req.body.courseDescription;
-     const courseWeight = req.body.courseWeight;
-     console.log(courseWeight);
-     const video = req.file.filename;
-     console.log(video);
-     const tutorName = req.body.tutorName;
+        const courseTitle = req.body.courseTitle;
+        const courseDescription = req.body.courseDescription;
+        const courseImage = req.file.filename;
+        console.log(courseImage)
+        const coursePrice = req.body.coursePrice;
+        const tutorName = req.body.tutorName;
 
-//      let filesArray = [];
-//      req.files.forEach(element => {
-//          const file = {
-//                 chapterName: element.chapterName,
-//                 video: element.originalname
-//          }
-//          filesArray.push(file);
-//      });
-//      const tutorial = filesArray;
-//      const quiz = req.body.quiz;
-     
-//      console.log(quiz);
 
-     var course_data = new course({
-             courseTitle: courseTitle,
-             video: video,
-             courseDescription: courseDescription,
-             weight: courseWeight,
-             tutorName: tutorName,
-        //      tutorial : tutorial,
-        //      quiz : quiz,
-     })
+        var course_data = new course({
+                courseTitle: courseTitle,
+                courseDescription: courseDescription,
+                coursePrice: coursePrice,
+                tutorName: tutorName,
+                courseImage: courseImage
+        })
 
-     course_data.save()
-     
-             .then(function () {
-                     res.status(201).json({ data: course_data, success: true, message: "Course has been added!" })
-             })
-             .catch(function (e) {
-                     res.status(500).json({ message: e })
-             })
+        course_data.save()
+                .then(function () {
+                        res.status(201).json({ data: course_data, success: true, message: "Course has been added!" })
+                })
+                .catch(function (e) {
+                        res.status(500).json({ message: e })
+                })
+})
+
+router.put("/addchapter/:id", video_upload.single('video'), function (req, res) {
+        const id = req.params.id;
+        const chapterName = req.body.chapterName
+        console.log(chapterName)
+        const video = req.file.filename;
+        console.log(video);
+
+        const tutorial = {
+                chapterName: chapterName,
+                video: video
+        }
+
+        course.findOneAndUpdate({ _id: id }, { $push: { tutorial: tutorial } }, { new: true })
+                .then(function (result) {
+                        res.status(201).json({ success: true, message: "Chapter has been added!" })
+                })
+                .catch(function (e) {
+                        res.status(500).json({ message: e })
+                });
 })
 
 // to display single course
 router.get("/course/:id", function (req, res) {
-     const id = req.params.id;
-     console.log(id)
-     course.findById({_id:id})
-        .then(function (data) {
-        console.log(data)
-        res.status(201).json(data)
-    })
-        .catch(function (e) {
-        res.status(500).json({ message: e })
-        });
+        const id = req.params.id;
+        console.log(id)
+        course.findById({ _id: id })
+                .then(function (data) {
+                        console.log(data)
+                        res.status(201).json(data)
+                })
+                .catch(function (e) {
+                        res.status(500).json({ message: e })
+                });
+})
+
+router.get("/coursechapter/:id", function (req, res) {
+        const id = req.params.id;
+        console.log(id)
+        course.findById({ _id: id })
+                .then(function (data) {
+                        const tutorial = data.tutorial
+                        console.log(tutorial)
+
+                        res.status(201).json(data)
+                })
+                .catch(function (e) {
+                        res.status(500).json({ message: e })
+                });
 })
 
 router.get("/searchcourse/:course_title", function (req, res) {
         const title = req.params.course_title;
         console.log(req.body.course_title)
-        course.find({title : title})
+        course.find({ title: title })
                 .then(function (result) {
-                        res.status(201).json({success: true, data : result})
+                        res.status(201).json({ success: true, data: result })
                 })
                 .catch(function (e) {
                         res.status(500).json({ message: e })
-        });
+                });
 })
 
 // update course
 router.put("/updatecourse/:id", function (req, res) {
-     const id = req.params.id;
-     const update = {
-             "$set": {
-                     "title": req.body.title,
-                     "description": req.body.description,
-                     "lecturer" : req.body.lecturer
-             }
-     };
-     const option = {
-             returnNewDocument: false
-     }
-     course.findOneAndUpdate({ "_id": id }, update, option)
-             .then(function (result) {
-                     res.status(201).json({ success: true, message: "Course has been updated!" })
-             })
-             .catch(function (e) {
-                     res.status(500).json({ message: e })
-             });
+        const id = req.params.id;
+        const update = {
+                "$set": {
+                        "title": req.body.title,
+                        "description": req.body.description,
+                        "lecturer": req.body.lecturer
+                }
+        };
+        const option = {
+                returnNewDocument: false
+        }
+        course.findOneAndUpdate({ "_id": id }, update, option)
+                .then(function (result) {
+                        res.status(201).json({ success: true, message: "Course has been updated!" })
+                })
+                .catch(function (e) {
+                        res.status(500).json({ message: e })
+                });
 })
 
 // update progress
@@ -134,36 +151,36 @@ router.put("/updateprogress/:id", function (req, res) {
                 .catch(function (e) {
                         res.status(500).json({ message: e })
                 });
-   })
+})
 
 // enroll course
 router.put("/enrollcourse/:id", function (req, res) {
         const id = req.params.id;
-        const enrolledBy =  req.body.enrolledBy
-       
-        course.findOneAndUpdate({ _id: id }, {$push:{enrolledBy: enrolledBy}}, {new: true})
+        const enrolledBy = req.body.enrolledBy
+
+        course.findOneAndUpdate({ _id: id }, { $push: { enrolledBy: enrolledBy } }, { new: true })
                 .then(function (result) {
                         res.status(201).json({ success: true, message: "Course has been updated!" })
                 })
                 .catch(function (e) {
                         res.status(500).json({ message: e })
                 });
-   })
+})
 
 
 //delete course
 router.delete('/deletecourse/:id', function (req, res) {
-     const id = req.params.id;
-     console.log(id)
+        const id = req.params.id;
+        console.log(id)
 
-     course.deleteOne({ _id: id })
-             .then(function (result) {
-                     res.status(201).json({ success: true, message: "Course has been deleted!" })
-             })
-             .catch(function (e) {
-                     res.status(500).json({ message: e })
-             });
+        course.deleteOne({ _id: id })
+                .then(function (result) {
+                        res.status(201).json({ success: true, message: "Course has been deleted!" })
+                })
+                .catch(function (e) {
+                        res.status(500).json({ message: e })
+                });
 
 })
-  
-module.exports = router
+
+module.exports = router;
