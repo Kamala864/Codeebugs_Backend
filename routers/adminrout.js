@@ -57,5 +57,19 @@ admin_route.post('/Admin/login',function(req,res){
 
     .catch()
 })
+admin_route.delete('/deleteadmin/:id', function (req, res) {
+    const id = req.params.id;
+    console.log(id)
+
+    Admin.deleteOne({ _id: id })
+            .then(function (result) {
+                    res.status(201).json({ success: true, message: "Admin has been deleted!" })
+            })
+            .catch(function (e) {
+                    res.status(500).json({ message: e })
+            });
+
+})
+
 
 module.exports = admin_route
